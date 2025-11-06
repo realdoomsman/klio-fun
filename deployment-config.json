@@ -1,0 +1,14 @@
+{
+  "programId": "DEMO_MODE_NO_REAL_CONTRACT",
+  "network": "demo",
+  "deployedAt": "2025-11-06T07:58:48Z",
+  "mode": "demo",
+  "status": "demo-ready",
+  "features": {
+    "walletIntegration": true,
+    "demoTrading": true,
+    "portfolioTracking": true,
+    "marketCreation": true,
+    "realSOLTransfers": true
+  }
+}

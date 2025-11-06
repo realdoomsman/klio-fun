@@ -1,0 +1,51 @@
+{
+  "name": "klio-fun",
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
+  "env": {
+    "NEXT_PUBLIC_SOLANA_NETWORK": "devnet",
+    "NEXT_PUBLIC_RPC_URL": "https://api.devnet.solana.com",
+    "NEXT_PUBLIC_APP_NAME": "Klio.fun",
+    "NEXT_PUBLIC_APP_DESCRIPTION": "Decentralized Prediction Markets on Solana"
+  },
+  "functions": {
+    "app/**/*.{js,ts,tsx}": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/fate",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/fate.fun",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}

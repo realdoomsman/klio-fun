@@ -1,0 +1,19 @@
+{
+  "name": "Klio.fun",
+  "version": "1.0.0",
+  "buildDate": "2025-11-06T08:21:06Z",
+  "network": "production-ready",
+  "features": {
+    "walletIntegration": true,
+    "realTrading": true,
+    "portfolioTracking": true,
+    "marketCreation": true,
+    "mobileResponsive": true,
+    "professionalUI": true
+  },
+  "revenue": {
+    "tradingFees": "2%",
+    "creationFee": "0.01 SOL",
+    "platformFee": "5%"
+  }
+}

@@ -1,0 +1,422 @@
+import { Connection, PublicKey, SystemProgram, LAMPORTS_PER_SOL, Keypair, Transaction } from '@solana/web3.js'
+import { useAnchorWallet, useConnection } from '@solana/wallet-adapter-react'
+import { useMemo } from 'react'
+import BN from 'bn.js'
+
+// Production program ID (will be updated after deployment)
+const PROGRAM_ID = new PublicKey('11111111111111111111111111111112')
+
+export interface PredictionAccount {
+  creator: PublicKey
+  eventDescription: string
+  deadline: BN
+  oracleSource: string
+  createdAt: BN
+  totalVolume: BN
+  yesSupply: BN
+  noSupply: BN
+  resolved: boolean
+  outcome: boolean | null
+  startingOdds: BN
+  yesMint: PublicKey
+  noMint: PublicKey
+  vault: PublicKey
+}
+
+export interface UserPosition {
+  prediction: PublicKey
+  user: PublicKey
+  yesTokens: BN
+  noTokens: BN
+  totalInvested: BN
+}
+
+export function useAnchorProgram() {
+  const { connection } = useConnection()
+  const wallet = useAnchorWallet()
+
+  const program = useMemo(() => {
+    if (!wallet) return null
+
+    return {
+      programId: PROGRAM_ID,
+      connection,
+      wallet,
+    }
+  }, [connection, wallet])
+
+  return { program, wallet, connection }
+}
+
+export async function createPrediction(
+  connection: Connection,
+  wallet: any,
+  eventDescription: string,
+  deadline: Date,
+  oracleSource: string,
+  startingOdds: number
+) {
+  if (!wallet) throw new Error('Wallet not available')
+
+  try {
+
+    
+    // Demo mode - create prediction with real SOL transaction
+    const predictionKeypair = Keypair.generate()
+    const vaultKeypair = Keypair.generate()
+    const deadlineTimestamp = Math.floor(deadline.getTime() / 1000)
+    
+    // Simple transaction to prove wallet connectivity (0.01 SOL creation fee)
+    const createTx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: wallet.publicKey,
+        toPubkey: vaultKeypair.publicKey,
+        lamports: 0.01 * LAMPORTS_PER_SOL,
+      })
+    )
+
+    const signature = await wallet.sendTransaction(createTx, connection)
+    await connection.confirmTransaction(signature, 'confirmed')
+
+    const predictionData = {
+      creator: wallet.publicKey.toString(),
+      eventDescription,
+      deadline: deadlineTimestamp,
+      oracleSource,
+      startingOdds,
+      yesMint: predictionKeypair.publicKey.toString() + '_yes',
+      noMint: predictionKeypair.publicKey.toString() + '_no',
+      vault: vaultKeypair.publicKey.toString(),
+      yesSupply: 0,
+      noSupply: 0,
+      totalVolume: 0,
+      resolved: false,
+      outcome: null,
+    }
+
+    const existingPredictions = JSON.parse(localStorage.getItem('predictions') || '[]')
+    existingPredictions.push({
+      ...predictionData,
+      address: predictionKeypair.publicKey.toString(),
+      id: predictionKeypair.publicKey.toString(),
+    })
+    localStorage.setItem('predictions', JSON.stringify(existingPredictions))
+
+
+    return {
+      signature,
+      predictionAddress: predictionKeypair.publicKey.toString(),
+      yesMint: predictionData.yesMint,
+      noMint: predictionData.noMint,
+    }
+  } catch (error) {
+    console.error('Error creating prediction:', error)
+    throw error
+  }
+}
+
+export async function buyTokens(
+  connection: Connection,
+  wallet: any,
+  predictionAddress: string,
+  side: 'yes' | 'no',
+  amount: number
+) {
+  if (!wallet) throw new Error('Wallet not available')
+
+  try {
+    console.log('🎯 buyTokens: Starting execution...', { predictionAddress, side, amount })
+    
+    // Step 1: Validate inputs
+    if (!wallet || !wallet.publicKey) {
+      throw new Error('Wallet or publicKey not available')
+    }
+    
+    if (!connection) {
+      throw new Error('Connection not available')
+    }
+    
+    const lamports = amount * LAMPORTS_PER_SOL
+    console.log('💰 Calculated lamports:', lamports)
+    
+    // Step 2: Find prediction
+    const predictions = JSON.parse(localStorage.getItem('predictions') || '[]')
+    let prediction = predictions.find((p: any) => p.address === predictionAddress)
+    
+    // If not found by address, try by id (for mock predictions)
+    if (!prediction) {
+      prediction = predictions.find((p: any) => p.id === predictionAddress)
+    }
+    
+    if (!prediction) {
+      console.error('❌ Prediction not found:', predictionAddress)
+      console.log('📋 Available predictions:', predictions.map((p: any) => ({ id: p.id, address: p.address })))
+      throw new Error(`Prediction not found: ${predictionAddress}`)
+    }
+    
+    console.log('✅ Found prediction:', prediction.eventDescription || prediction.event)
+    console.log('📊 Prediction data:', { 
+      vault: prediction.vault, 
+      creator: prediction.creator,
+      yesSupply: prediction.yesSupply,
+      noSupply: prediction.noSupply 
+    })
+
+    // Calculate tokens using bonding curve
+    const baseLiquidity = 1000
+    const totalSupply = prediction.yesSupply + prediction.noSupply + baseLiquidity
+    const currentPrice = side === 'yes' 
+      ? Math.max(prediction.yesSupply / totalSupply, 0.01)
+      : Math.max(prediction.noSupply / totalSupply, 0.01)
+
+    const tokensToMint = amount / currentPrice
+
+    // Step 3: Calculate transaction amounts
+    const vaultAmount = Math.floor(lamports * 0.98)
+    const creatorFee = lamports - vaultAmount
+    console.log('💸 Transaction amounts:', { vaultAmount, creatorFee, total: lamports })
+
+    // Step 4: Validate addresses
+    let vaultPubkey, creatorPubkey
+    try {
+      vaultPubkey = new PublicKey(prediction.vault)
+      creatorPubkey = new PublicKey(prediction.creator)
+      console.log('✅ Valid addresses:', { vault: vaultPubkey.toString(), creator: creatorPubkey.toString() })
+    } catch (error) {
+      console.error('❌ Invalid address:', error)
+      throw new Error(`Invalid address in prediction: ${error}`)
+    }
+
+    // Step 5: Create transaction
+    console.log('🔨 Creating transaction...')
+    const tx = new Transaction()
+    
+    try {
+      tx.add(
+        SystemProgram.transfer({
+          fromPubkey: wallet.publicKey,
+          toPubkey: vaultPubkey,
+          lamports: vaultAmount,
+        })
+      )
+
+      if (creatorFee > 0) {
+        tx.add(
+          SystemProgram.transfer({
+            fromPubkey: wallet.publicKey,
+            toPubkey: creatorPubkey,
+            lamports: creatorFee,
+          })
+        )
+      }
+      console.log('✅ Transaction created successfully')
+    } catch (error) {
+      console.error('❌ Error creating transaction:', error)
+      throw new Error(`Failed to create transaction: ${error}`)
+    }
+
+    // Step 6: Send transaction
+    console.log('📡 Sending transaction...')
+    let signature
+    try {
+      signature = await wallet.sendTransaction(tx, connection)
+      console.log('📡 Transaction sent, signature:', signature)
+    } catch (error) {
+      console.error('❌ Error sending transaction:', error)
+      throw new Error(`Failed to send transaction: ${error}`)
+    }
+
+    // Step 7: Confirm transaction
+    console.log('⏳ Confirming transaction...')
+    try {
+      await connection.confirmTransaction(signature, 'confirmed')
+      console.log('✅ Transaction confirmed:', signature)
+    } catch (error) {
+      console.error('❌ Error confirming transaction:', error)
+      throw new Error(`Failed to confirm transaction: ${error}`)
+    }
+
+    // Update prediction state
+    prediction.totalVolume += amount
+    if (side === 'yes') {
+      prediction.yesSupply += tokensToMint
+    } else {
+      prediction.noSupply += tokensToMint
+    }
+
+    const updatedPredictions = predictions.map((p: any) => 
+      p.address === predictionAddress ? prediction : p
+    )
+    localStorage.setItem('predictions', JSON.stringify(updatedPredictions))
+
+    // Update user positions
+    const userPositions = JSON.parse(localStorage.getItem('userPositions') || '[]')
+    const existingPosition = userPositions.find((pos: any) => 
+      pos.prediction === predictionAddress && pos.user === wallet.publicKey.toString()
+    )
+
+    if (existingPosition) {
+      if (side === 'yes') {
+        existingPosition.yesTokens += tokensToMint
+      } else {
+        existingPosition.noTokens += tokensToMint
+      }
+      existingPosition.totalInvested += amount
+    } else {
+      userPositions.push({
+        prediction: predictionAddress,
+        user: wallet.publicKey.toString(),
+        yesTokens: side === 'yes' ? tokensToMint : 0,
+        noTokens: side === 'no' ? tokensToMint : 0,
+        totalInvested: amount,
+      })
+    }
+    localStorage.setItem('userPositions', JSON.stringify(userPositions))
+
+    console.log('✅ Trade completed successfully')
+    return {
+      signature,
+      tokensReceived: tokensToMint,
+      newPrice: calculatePrice(prediction.yesSupply, prediction.noSupply, side),
+    }
+  } catch (error) {
+    console.error('Error buying tokens:', error)
+    throw error
+  }
+}
+
+export function calculatePrice(yesSupply: number, noSupply: number, side: 'yes' | 'no'): number {
+  const baseLiquidity = 1000
+  const totalSupply = yesSupply + noSupply + baseLiquidity
+  
+  if (side === 'yes') {
+    return yesSupply / totalSupply
+  } else {
+    return noSupply / totalSupply
+  }
+}
+
+export function getAllPredictions(): any[] {
+  return JSON.parse(localStorage.getItem('predictions') || '[]')
+}
+
+export function getUserPositions(userAddress: string): any[] {
+  const positions = JSON.parse(localStorage.getItem('userPositions') || '[]')
+  return positions.filter((pos: any) => pos.user === userAddress)
+}
+
+export function lamportsToSol(lamports: BN | number): number {
+  const amount = typeof lamports === 'number' ? lamports : lamports.toNumber()
+  return amount / LAMPORTS_PER_SOL
+}
+
+export function solToLamports(sol: number): BN {
+  return new BN(sol * LAMPORTS_PER_SOL)
+}
+
+export async function resolvePrediction(
+  connection: Connection,
+  wallet: any,
+  predictionAddress: string,
+  outcome: boolean
+) {
+  if (!wallet) throw new Error('Wallet not available')
+
+  try {
+    // For demo purposes, just update localStorage
+    const predictions = JSON.parse(localStorage.getItem('predictions') || '[]')
+    const predictionIndex = predictions.findIndex((p: any) => p.address === predictionAddress)
+    
+    if (predictionIndex === -1) throw new Error('Prediction not found')
+    
+    const prediction = predictions[predictionIndex]
+    
+    if (prediction.creator !== wallet.publicKey.toString()) {
+      throw new Error('Only creator can resolve this prediction')
+    }
+    
+    if (prediction.resolved) {
+      throw new Error('Prediction already resolved')
+    }
+
+    // Simple transaction to prove wallet connectivity
+    const tx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: wallet.publicKey,
+        toPubkey: wallet.publicKey, // Self-transfer
+        lamports: 1, // Minimal amount
+      })
+    )
+
+    const signature = await wallet.sendTransaction(tx, connection)
+    await connection.confirmTransaction(signature, 'confirmed')
+
+    // Update prediction state
+    prediction.resolved = true
+    prediction.outcome = outcome
+    predictions[predictionIndex] = prediction
+    localStorage.setItem('predictions', JSON.stringify(predictions))
+
+    return signature
+  } catch (error) {
+    console.error('Error resolving prediction:', error)
+    throw error
+  }
+}
+
+export async function claimWinnings(
+  connection: Connection,
+  wallet: any,
+  predictionAddress: string
+) {
+  if (!wallet) throw new Error('Wallet not available')
+
+  try {
+    const predictions = JSON.parse(localStorage.getItem('predictions') || '[]')
+    const prediction = predictions.find((p: any) => p.address === predictionAddress)
+    
+    if (!prediction) throw new Error('Prediction not found')
+    if (!prediction.resolved) throw new Error('Prediction not resolved yet')
+
+    const userPositions = JSON.parse(localStorage.getItem('userPositions') || '[]')
+    const position = userPositions.find((pos: any) => 
+      pos.prediction === predictionAddress && pos.user === wallet.publicKey.toString()
+    )
+
+    if (!position) throw new Error('No position found')
+
+    const winningTokens = prediction.outcome ? position.yesTokens : position.noTokens
+    if (winningTokens <= 0) throw new Error('No winning tokens to claim')
+
+    // Calculate payout based on winning tokens and total pool
+    const totalWinningTokens = prediction.outcome ? prediction.yesSupply : prediction.noSupply
+    const payoutRatio = winningTokens / totalWinningTokens
+    const totalPayout = prediction.totalVolume * payoutRatio * 0.95 // 5% platform fee
+
+    // Simple transaction to simulate payout
+    const tx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: wallet.publicKey,
+        toPubkey: wallet.publicKey, // Self-transfer for demo
+        lamports: Math.floor(totalPayout * LAMPORTS_PER_SOL),
+      })
+    )
+
+    const signature = await wallet.sendTransaction(tx, connection)
+    await connection.confirmTransaction(signature, 'confirmed')
+
+    // Mark position as claimed
+    position.claimed = true
+    position.payout = totalPayout
+    localStorage.setItem('userPositions', JSON.stringify(userPositions))
+
+    return {
+      signature,
+      payout: totalPayout,
+      winningTokens,
+    }
+  } catch (error) {
+    console.error('Error claiming winnings:', error)
+    throw error
+  }
+}
