@@ -384,8 +384,12 @@ body {
   color: #000000;
 }
 
-/* Responsive utilities */
+/* Mobile-first responsive utilities */
 @media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
   .mobile-stack {
     flex-direction: column !important;
     gap: 16px !important;
@@ -406,6 +410,33 @@ body {
   .mobile-margin {
     margin: 16px !important;
   }
+  
+  /* Better mobile buttons */
+  .btn-sharp, .btn-sharp-dark {
+    padding: 16px 24px !important;
+    font-size: 16px !important;
+    min-height: 48px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  
+  /* Mobile cards */
+  .sharp-card, .sharp-card-dark {
+    padding: 20px !important;
+    margin: 16px !important;
+  }
+  
+  /* Mobile text scaling */
+  h1 { font-size: clamp(1.8rem, 8vw, 3rem) !important; }
+  h2 { font-size: clamp(1.5rem, 6vw, 2.5rem) !important; }
+  h3 { font-size: clamp(1.2rem, 5vw, 2rem) !important; }
+  
+  /* Mobile navigation */
+  .mobile-nav-item {
+    padding: 16px 0 !important;
+    font-size: 18px !important;
+    border-bottom: 1px solid #333 !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -415,6 +446,17 @@ body {
   
   .mobile-small-gap {
     gap: 12px !important;
+  }
+  
+  /* Extra small mobile adjustments */
+  .btn-sharp, .btn-sharp-dark {
+    padding: 14px 20px !important;
+    font-size: 14px !important;
+  }
+  
+  .sharp-card, .sharp-card-dark {
+    padding: 16px !important;
+    margin: 12px !important;
   }
 }
 
@@ -469,6 +511,25 @@ body {
   padding: clamp(12px, 3vw, 20px) clamp(20px, 5vw, 40px);
   font-size: clamp(14px, 3vw, 18px);
   min-height: clamp(44px, 8vw, 60px);
+}
+
+/* Navigation responsive */
+@media (min-width: 1024px) {
+  .desktop-nav {
+    display: flex !important;
+  }
+  .mobile-menu-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: flex !important;
+  }
 }
 
 /* Wallet adapter styling */

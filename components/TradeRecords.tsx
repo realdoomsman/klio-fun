@@ -51,7 +51,7 @@ export function TradeRecords() {
   if (!mounted) return null
 
   return (
-    <div style={{ minHeight: '100vh', background: '#000000', color: '#ffffff', padding: '40px 20px' }}>
+    <div style={{ minHeight: '100vh', background: '#000000', color: '#ffffff', padding: 'clamp(20px, 5vw, 40px) clamp(12px, 3vw, 20px)' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h1 style={{
           fontSize: 'clamp(2rem, 6vw, 3rem)',
@@ -143,8 +143,9 @@ export function TradeRecords() {
                 style={{
                   background: 'linear-gradient(135deg, #111111 0%, #1a1a1a 100%)',
                   border: '3px solid #333333',
-                  padding: '30px',
+                  padding: 'clamp(16px, 4vw, 30px)',
                   transition: 'all 0.3s ease',
+                  margin: '0 clamp(4px, 1vw, 8px)',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = record.side === 'yes' ? '#00ff00' : '#ff0080'

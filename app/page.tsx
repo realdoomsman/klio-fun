@@ -468,39 +468,7 @@ export default function Home() {
     )
   }
 
-  if (currentView === 'token') {
-    return (
-      <div style={{ minHeight: '100vh', background: '#000000' }}>
-        <Header onNavigate={setCurrentView} />
-        <Token />
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            style: {
-              background: '#111111',
-              color: '#ffffff',
-              border: '2px solid #00ff00',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-            },
-            success: {
-              iconTheme: {
-                primary: '#00ff00',
-                secondary: '#000000',
-              },
-            },
-            error: {
-              iconTheme: {
-                primary: '#ff0080',
-                secondary: '#ffffff',
-              },
-            },
-          }}
-        />
-      </div>
-    )
-  }
+
 
   if (currentView === 'about') {
     return (
@@ -649,19 +617,28 @@ export default function Home() {
       {/* Hero Section */}
       <section style={heroStyle}>
         <div style={heroPatternStyle} />
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+        <div style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          textAlign: 'center', 
+          position: 'relative', 
+          zIndex: 2,
+          padding: '0 16px',
+        }}>
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '12px',
+            gap: 'clamp(8px, 2vw, 12px)',
             background: '#000000',
             border: '2px solid #00ff00',
-            padding: '12px 24px',
-            marginBottom: '40px',
+            padding: 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px)',
+            marginBottom: 'clamp(24px, 6vw, 40px)',
             textTransform: 'uppercase',
-            letterSpacing: '2px',
+            letterSpacing: 'clamp(1px, 0.3vw, 2px)',
             fontWeight: 700,
-            fontSize: '14px',
+            fontSize: 'clamp(12px, 2.5vw, 14px)',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
           }}>
             <Activity style={{ color: '#00ff00' }} size={20} />
             <span style={{ color: '#00ff00' }}>LIVE PREDICTION MARKETS</span>
@@ -746,16 +723,16 @@ export default function Home() {
 
       {/* Stats Section */}
       <section style={{ 
-        padding: '100px 20px', 
+        padding: 'clamp(60px, 12vw, 100px) clamp(16px, 4vw, 20px)', 
         background: 'linear-gradient(135deg, #111111 0%, #000000 100%)',
         borderBottom: '2px solid #333333',
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(350px, 100%), 1fr))', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', 
             gap: 'clamp(20px, 4vw, 40px)',
-            padding: '0 16px',
+            padding: '0 clamp(8px, 2vw, 16px)',
           }}>
             {[
               { 
@@ -940,96 +917,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contract Address Section */}
-      <section style={{
-        padding: '80px 20px',
-        background: 'linear-gradient(135deg, #111111 0%, #000000 100%)',
-        borderTop: '2px solid #333333',
-      }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{
-            fontSize: 'clamp(2rem, 6vw, 3rem)',
-            fontWeight: 900,
-            marginBottom: '40px',
-            textTransform: 'uppercase',
-            letterSpacing: '-1px',
-            background: 'linear-gradient(45deg, #ffffff 0%, #ffff00 50%, #00ff00 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            $KLIO TOKEN CONTRACT
-          </h2>
 
-          <div style={{
-            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-            border: '3px solid #000000',
-            padding: '30px',
-            maxWidth: '700px',
-            margin: '0 auto 40px auto',
-          }}>
-            <div style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: 'clamp(12px, 2.5vw, 16px)',
-              fontWeight: 600,
-              color: '#000000',
-              wordBreak: 'break-all',
-              marginBottom: '20px',
-            }}>
-              KLIOTokenAddress1234567890123456789012345
-            </div>
-            
-            <div style={{
-              padding: '12px',
-              background: '#000000',
-              border: '2px solid #ffff00',
-              color: '#ffff00',
-              fontSize: 'clamp(12px, 2.5vw, 14px)',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-            }}>
-              ⚠️ TOKEN LAUNCHING SOON
-            </div>
-          </div>
-
-          <button 
-            onClick={() => setCurrentView('token')}
-            style={{
-              background: '#ffff00',
-              color: '#000000',
-              border: '3px solid #000000',
-              fontWeight: 800,
-              padding: 'clamp(16px, 3vw, 20px) clamp(24px, 5vw, 32px)',
-              fontSize: 'clamp(14px, 3vw, 16px)',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '12px',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#000000'
-              e.currentTarget.style.color = '#ffff00'
-              e.currentTarget.style.borderColor = '#ffff00'
-              e.currentTarget.style.transform = 'translateY(-4px)'
-              e.currentTarget.style.boxShadow = '0 15px 30px rgba(255, 255, 0, 0.4)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#ffff00'
-              e.currentTarget.style.color = '#000000'
-              e.currentTarget.style.borderColor = '#000000'
-              e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = 'none'
-            }}
-          >
-            <Coins size={20} />
-            LEARN MORE ABOUT $KLIO
-          </button>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section style={{ 

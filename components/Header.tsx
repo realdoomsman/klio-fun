@@ -82,6 +82,8 @@ export function Header({ onNavigate }: HeaderProps) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '16px',
         }}>
           {/* Logo */}
           <div style={logoStyle}>
@@ -98,10 +100,10 @@ export function Header({ onNavigate }: HeaderProps) {
           
           {/* Desktop Navigation */}
           <nav style={{
-            display: 'flex',
+            display: 'none',
             alignItems: 'center',
-            gap: '40px',
-          }} className="hidden lg:flex">
+            gap: 'clamp(20px, 4vw, 40px)',
+          }} className="desktop-nav">
             <button 
               onClick={() => handleNavigation('home')}
               style={navLinkStyle}
@@ -144,20 +146,7 @@ export function Header({ onNavigate }: HeaderProps) {
             >
               MY TRADES
             </button>
-            <button 
-              onClick={() => handleNavigation('token')}
-              style={navLinkStyle}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#ffff00'
-                e.currentTarget.style.transform = 'translateY(-2px)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = '#ffffff'
-                e.currentTarget.style.transform = 'translateY(0)'
-              }}
-            >
-              $KLIO TOKEN
-            </button>
+
             <button 
               onClick={() => handleNavigation('about')}
               style={navLinkStyle}
@@ -178,7 +167,8 @@ export function Header({ onNavigate }: HeaderProps) {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '20px',
+            gap: 'clamp(12px, 3vw, 20px)',
+            flexWrap: 'wrap',
           }}>
 
             
@@ -246,10 +236,15 @@ export function Header({ onNavigate }: HeaderProps) {
                 background: '#000000',
                 border: '2px solid #ffffff',
                 cursor: 'pointer',
-                padding: '12px',
+                padding: 'clamp(10px, 2vw, 12px)',
                 transition: 'all 0.2s ease',
+                minWidth: '48px',
+                minHeight: '48px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-              className="lg:hidden"
+              className="mobile-menu-btn"
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#000000'
                 e.currentTarget.style.background = '#ffffff'
@@ -281,7 +276,7 @@ export function Header({ onNavigate }: HeaderProps) {
               <button onClick={() => handleNavigation('home')} style={navLinkStyle}>HOME</button>
               <button onClick={() => handleNavigation('markets')} style={navLinkStyle}>MARKETS</button>
               <button onClick={() => handleNavigation('portfolio')} style={navLinkStyle}>MY TRADES</button>
-              <button onClick={() => handleNavigation('token')} style={navLinkStyle}>$KLIO TOKEN</button>
+
               <button onClick={() => handleNavigation('about')} style={navLinkStyle}>ABOUT</button>
               
               {/* Mobile Twitter Link */}

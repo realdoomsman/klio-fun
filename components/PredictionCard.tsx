@@ -104,7 +104,7 @@ export function PredictionCard({ prediction, onTrade }: PredictionCardProps) {
     background: 'linear-gradient(135deg, #111111 0%, #1a1a1a 100%)',
     border: '3px solid #333333',
     color: '#ffffff',
-    padding: 'clamp(20px, 4vw, 32px)',
+    padding: 'clamp(16px, 4vw, 32px)',
     cursor: 'pointer',
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     position: 'relative' as const,
@@ -112,7 +112,8 @@ export function PredictionCard({ prediction, onTrade }: PredictionCardProps) {
     height: '100%',
     display: 'flex',
     flexDirection: 'column' as const,
-    minHeight: 'clamp(400px, 50vh, 500px)',
+    minHeight: 'clamp(350px, 45vh, 500px)',
+    margin: '0 clamp(4px, 1vw, 8px)',
   }
 
   const progressBarStyle = {
