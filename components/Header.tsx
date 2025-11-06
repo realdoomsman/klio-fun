@@ -1,7 +1,7 @@
 'use client'
 
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { Zap, Search, Menu, X, Activity } from 'lucide-react'
+import { Zap, Search, Menu, X, Activity, Twitter, Coins } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 interface HeaderProps {
@@ -167,6 +167,20 @@ export function Header({ onNavigate, onSearch }: HeaderProps) {
               LEADERBOARD
             </button>
             <button 
+              onClick={() => handleNavigation('token')}
+              style={navLinkStyle}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#ffff00'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#ffffff'
+                e.currentTarget.style.transform = 'translateY(0)'
+              }}
+            >
+              $KLIO TOKEN
+            </button>
+            <button 
               onClick={() => handleNavigation('about')}
               style={navLinkStyle}
               onMouseEnter={(e) => {
@@ -219,6 +233,41 @@ export function Header({ onNavigate, onSearch }: HeaderProps) {
               />
             </div>
             
+            {/* Twitter Link */}
+            <a
+              href="https://x.com/klioFun"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: '#000000',
+                border: '2px solid #1DA1F2',
+                padding: '8px 16px',
+                fontSize: '12px',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                color: '#1DA1F2',
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#1DA1F2'
+                e.currentTarget.style.color = '#ffffff'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#000000'
+                e.currentTarget.style.color = '#1DA1F2'
+                e.currentTarget.style.transform = 'translateY(0)'
+              }}
+            >
+              <Twitter size={16} />
+              FOLLOW
+            </a>
+
             {/* Live indicator */}
             <div style={{
               display: 'flex',
@@ -284,7 +333,26 @@ export function Header({ onNavigate, onSearch }: HeaderProps) {
               <button onClick={() => handleNavigation('markets')} style={navLinkStyle}>MARKETS</button>
               <button onClick={() => handleNavigation('portfolio')} style={navLinkStyle}>PORTFOLIO</button>
               <button onClick={() => handleNavigation('leaderboard')} style={navLinkStyle}>LEADERBOARD</button>
+              <button onClick={() => handleNavigation('token')} style={navLinkStyle}>$KLIO TOKEN</button>
               <button onClick={() => handleNavigation('about')} style={navLinkStyle}>ABOUT</button>
+              
+              {/* Mobile Twitter Link */}
+              <a
+                href="https://x.com/klioFun"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  ...navLinkStyle,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  color: '#1DA1F2',
+                  textDecoration: 'none',
+                }}
+              >
+                <Twitter size={16} />
+                FOLLOW ON X
+              </a>
               
               {/* Mobile search */}
               <div style={{ position: 'relative', marginTop: '16px' }}>

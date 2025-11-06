@@ -6,6 +6,7 @@ import { CreatePredictionModal } from '@/components/CreatePredictionModal'
 import { PredictionCard } from '@/components/PredictionCard'
 import { Portfolio } from '@/components/Portfolio'
 import { Legal } from '@/components/Legal'
+import { Token } from '@/components/Token'
 
 import { TrendingUp, Zap, Users, Trophy, Target, Rocket, Activity, BarChart3, Filter, Flame, Star } from 'lucide-react'
 import { usePredictions } from '@/hooks/usePredictions'
@@ -439,6 +440,40 @@ export default function Home() {
       <div style={{ minHeight: '100vh', background: '#000000' }}>
         <Header onNavigate={setCurrentView} onSearch={setSearchQuery} />
         <Portfolio />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: '#111111',
+              color: '#ffffff',
+              border: '2px solid #00ff00',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+            },
+            success: {
+              iconTheme: {
+                primary: '#00ff00',
+                secondary: '#000000',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: '#ff0080',
+                secondary: '#ffffff',
+              },
+            },
+          }}
+        />
+      </div>
+    )
+  }
+
+  if (currentView === 'token') {
+    return (
+      <div style={{ minHeight: '100vh', background: '#000000' }}>
+        <Header onNavigate={setCurrentView} onSearch={setSearchQuery} />
+        <Token />
         <Toaster
           position="bottom-right"
           toastOptions={{
