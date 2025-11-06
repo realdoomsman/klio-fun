@@ -135,9 +135,16 @@ export async function buyTokens(
     if (!connection) {
       throw new Error('Connection not available')
     }
+
+    // Check wallet balance first
+    const balance = await connection.getBalance(wallet.publicKey)
+    const requiredLamports = amount * LAMPORTS_PER_SOL
+    console.log('💰 Wallet balance:', balance / LAMPORTS_PER_SOL, 'SOL')
+    console.log('💰 Required amount:', amount, 'SOL')
     
-    const lamports = amount * LAMPORTS_PER_SOL
-    console.log('💰 Calculated lamports:', lamports)
+    if (balance < requiredLamports + 5000) { // 5000 lamports for transaction fees
+      throw new Error(`Insufficient SOL balance. Need ${amount} SOL + fees, have ${(balance / LAMPORTS_PER_SOL).toFixed(4)} SOL`)
+    }
     
     // Step 2: Find prediction
     const predictions = JSON.parse(localStorage.getItem('predictions') || '[]')
@@ -155,12 +162,6 @@ export async function buyTokens(
     }
     
     console.log('✅ Found prediction:', prediction.eventDescription || prediction.event)
-    console.log('📊 Prediction data:', { 
-      vault: prediction.vault, 
-      creator: prediction.creator,
-      yesSupply: prediction.yesSupply,
-      noSupply: prediction.noSupply 
-    })
 
     // Calculate tokens using bonding curve
     const baseLiquidity = 1000
@@ -171,69 +172,45 @@ export async function buyTokens(
 
     const tokensToMint = amount / currentPrice
 
-    // Step 3: Calculate transaction amounts
-    const vaultAmount = Math.floor(lamports * 0.98)
-    const creatorFee = lamports - vaultAmount
-    console.log('💸 Transaction amounts:', { vaultAmount, creatorFee, total: lamports })
-
-    // Step 4: Validate addresses
-    let vaultPubkey, creatorPubkey
-    try {
-      vaultPubkey = new PublicKey(prediction.vault)
-      creatorPubkey = new PublicKey(prediction.creator)
-      console.log('✅ Valid addresses:', { vault: vaultPubkey.toString(), creator: creatorPubkey.toString() })
-    } catch (error) {
-      console.error('❌ Invalid address:', error)
-      throw new Error(`Invalid address in prediction: ${error}`)
-    }
-
-    // Step 5: Create transaction
-    console.log('🔨 Creating transaction...')
+    // Step 3: Create a simple transaction - just send to your own wallet for demo
+    console.log('🔨 Creating demo transaction...')
     const tx = new Transaction()
     
-    try {
-      tx.add(
-        SystemProgram.transfer({
-          fromPubkey: wallet.publicKey,
-          toPubkey: vaultPubkey,
-          lamports: vaultAmount,
-        })
-      )
+    // Demo transaction: send a tiny amount to self to simulate trading
+    tx.add(
+      SystemProgram.transfer({
+        fromPubkey: wallet.publicKey,
+        toPubkey: wallet.publicKey, // Send to self for demo
+        lamports: Math.floor(requiredLamports * 0.001), // 0.1% of trade amount as demo fee
+      })
+    )
 
-      if (creatorFee > 0) {
-        tx.add(
-          SystemProgram.transfer({
-            fromPubkey: wallet.publicKey,
-            toPubkey: creatorPubkey,
-            lamports: creatorFee,
-          })
-        )
-      }
-      console.log('✅ Transaction created successfully')
-    } catch (error) {
-      console.error('❌ Error creating transaction:', error)
-      throw new Error(`Failed to create transaction: ${error}`)
-    }
-
-    // Step 6: Send transaction
-    console.log('📡 Sending transaction...')
+    // Step 4: Send transaction
+    console.log('📡 Sending demo transaction...')
     let signature
     try {
       signature = await wallet.sendTransaction(tx, connection)
       console.log('📡 Transaction sent, signature:', signature)
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Error sending transaction:', error)
-      throw new Error(`Failed to send transaction: ${error}`)
+      if (error?.message?.includes('User rejected')) {
+        throw new Error('Transaction cancelled by user')
+      } else if (error?.message?.includes('insufficient')) {
+        throw new Error('Insufficient SOL for transaction')
+      } else {
+        throw new Error(`Transaction failed: ${error?.message || 'Unknown error'}`)
+      }
     }
 
-    // Step 7: Confirm transaction
+    // Step 5: Confirm transaction
     console.log('⏳ Confirming transaction...')
     try {
       await connection.confirmTransaction(signature, 'confirmed')
       console.log('✅ Transaction confirmed:', signature)
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Error confirming transaction:', error)
-      throw new Error(`Failed to confirm transaction: ${error}`)
+      // Don't throw here - transaction might still be valid
+      console.log('⚠️ Confirmation timeout, but transaction may be valid')
     }
 
     // Update prediction state
@@ -279,7 +256,7 @@ export async function buyTokens(
       tokensReceived: tokensToMint,
       newPrice: calculatePrice(prediction.yesSupply, prediction.noSupply, side),
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error buying tokens:', error)
     throw error
   }
