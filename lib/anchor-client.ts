@@ -172,7 +172,7 @@ export async function buyTokens(
 
     const tokensToMint = amount / currentPrice
 
-    // Step 3: Send SOL to your wallet for manual distribution
+    // Step 3: Send SOL to KLIO wallet - Phantom will automatically open
     const KLIO_WALLET = new PublicKey('DNQCaa1XgRnjQES86CwewMLqyT3GLChdv2RrpARTBb7u')
     
     console.log('🔨 Creating transaction to KLIO wallet...')
@@ -187,8 +187,8 @@ export async function buyTokens(
       })
     )
 
-    // Step 4: Send transaction
-    console.log('📡 Sending SOL to KLIO wallet for manual distribution...')
+    // Step 4: Send transaction - This will automatically open Phantom
+    console.log('📡 Opening Phantom for transaction approval...')
     let signature
     try {
       signature = await wallet.sendTransaction(tx, connection)
@@ -215,7 +215,7 @@ export async function buyTokens(
       console.log('⚠️ Confirmation timeout, but transaction may be valid')
     }
 
-    // Update prediction state
+    // Update prediction state for UI
     prediction.totalVolume += amount
     if (side === 'yes') {
       prediction.yesSupply += tokensToMint
@@ -228,26 +228,7 @@ export async function buyTokens(
     )
     localStorage.setItem('predictions', JSON.stringify(updatedPredictions))
 
-    // Store trade record for manual distribution
-    const tradeRecord = {
-      id: `trade_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      userWallet: wallet.publicKey.toString(),
-      predictionId: predictionAddress,
-      predictionTitle: prediction.eventDescription || prediction.event,
-      side: side,
-      amount: amount,
-      tokensToReceive: tokensToMint,
-      signature: signature,
-      timestamp: new Date().toISOString(),
-      status: 'pending_distribution'
-    }
-
-    // Store in localStorage for tracking
-    const tradeRecords = JSON.parse(localStorage.getItem('tradeRecords') || '[]')
-    tradeRecords.push(tradeRecord)
-    localStorage.setItem('tradeRecords', JSON.stringify(tradeRecords))
-
-    // Update user positions
+    // Update user positions for portfolio display
     const userPositions = JSON.parse(localStorage.getItem('userPositions') || '[]')
     const existingPosition = userPositions.find((pos: any) => 
       pos.prediction === predictionAddress && pos.user === wallet.publicKey.toString()
@@ -271,14 +252,12 @@ export async function buyTokens(
     }
     localStorage.setItem('userPositions', JSON.stringify(userPositions))
 
-    console.log('✅ Trade completed successfully - SOL sent to KLIO wallet for manual distribution')
-    console.log('📋 Trade record:', tradeRecord)
+    console.log('✅ Trade completed successfully - SOL sent to KLIO wallet')
     
     return {
       signature,
       tokensReceived: tokensToMint,
       newPrice: calculatePrice(prediction.yesSupply, prediction.noSupply, side),
-      tradeRecord,
     }
   } catch (error: any) {
     console.error('Error buying tokens:', error)

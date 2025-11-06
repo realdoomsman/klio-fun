@@ -90,8 +90,8 @@ export function useTrading() {
       }
 
       toast.success(
-        `Trade submitted! ${amount} SOL sent for ${side.toUpperCase()} position. Tokens will be distributed manually.`, 
-        { id: 'trade-loading', duration: 6000 }
+        `Successfully traded ${side.toUpperCase()} for ${amount} SOL! Received ${result.tokensReceived.toFixed(2)} tokens`, 
+        { id: 'trade-loading' }
       )
 
       console.log('🎉 Trade signature:', result.signature)

@@ -438,7 +438,7 @@ export default function Home() {
     return (
       <div style={{ minHeight: '100vh', background: '#000000' }}>
         <Header onNavigate={setCurrentView} />
-        <TradeRecords />
+        <Portfolio />
         <Toaster
           position="bottom-right"
           toastOptions={{
