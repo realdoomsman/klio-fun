@@ -104,7 +104,7 @@ export function PredictionCard({ prediction, onTrade }: PredictionCardProps) {
     background: 'linear-gradient(135deg, #111111 0%, #1a1a1a 100%)',
     border: '3px solid #333333',
     color: '#ffffff',
-    padding: '32px',
+    padding: 'clamp(20px, 4vw, 32px)',
     cursor: 'pointer',
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     position: 'relative' as const,
@@ -112,6 +112,7 @@ export function PredictionCard({ prediction, onTrade }: PredictionCardProps) {
     height: '100%',
     display: 'flex',
     flexDirection: 'column' as const,
+    minHeight: 'clamp(400px, 50vh, 500px)',
   }
 
   const progressBarStyle = {
@@ -136,8 +137,8 @@ export function PredictionCard({ prediction, onTrade }: PredictionCardProps) {
     color: '#000000',
     border: '3px solid #000000',
     fontWeight: 800,
-    padding: '20px 24px',
-    fontSize: '16px',
+    padding: 'clamp(16px, 3vw, 20px) clamp(20px, 4vw, 24px)',
+    fontSize: 'clamp(14px, 3vw, 16px)',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
     textTransform: 'uppercase' as const,
@@ -147,6 +148,7 @@ export function PredictionCard({ prediction, onTrade }: PredictionCardProps) {
     flexDirection: 'column' as const,
     alignItems: 'center',
     gap: '8px',
+    minHeight: 'clamp(60px, 8vw, 80px)',
   }
 
   const noButtonStyle = {
@@ -154,8 +156,8 @@ export function PredictionCard({ prediction, onTrade }: PredictionCardProps) {
     color: '#ffffff',
     border: '3px solid #000000',
     fontWeight: 800,
-    padding: '20px 24px',
-    fontSize: '16px',
+    padding: 'clamp(16px, 3vw, 20px) clamp(20px, 4vw, 24px)',
+    fontSize: 'clamp(14px, 3vw, 16px)',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
     textTransform: 'uppercase' as const,
@@ -165,6 +167,7 @@ export function PredictionCard({ prediction, onTrade }: PredictionCardProps) {
     flexDirection: 'column' as const,
     alignItems: 'center',
     gap: '8px',
+    minHeight: 'clamp(60px, 8vw, 80px)',
   }
 
   return (

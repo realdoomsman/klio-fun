@@ -344,8 +344,11 @@ export default function Home() {
     background: 'linear-gradient(135deg, #000000 0%, #111111 100%)',
     position: 'relative' as const,
     overflow: 'hidden' as const,
-    padding: '120px 20px',
+    padding: '80px 16px',
     borderBottom: '2px solid #333333',
+    '@media (min-width: 768px)': {
+      padding: '120px 20px',
+    },
   }
 
   const heroPatternStyle = {
@@ -365,10 +368,10 @@ export default function Home() {
   const titleStyle = {
     fontFamily: 'Inter, sans-serif',
     fontWeight: 900,
-    fontSize: '5rem',
+    fontSize: 'clamp(2.5rem, 8vw, 5rem)',
     lineHeight: 0.9,
     textTransform: 'uppercase' as const,
-    letterSpacing: '-3px',
+    letterSpacing: 'clamp(-2px, -0.5vw, -3px)',
     marginBottom: '2rem',
     background: 'linear-gradient(45deg, #ffffff 0%, #00ff00 30%, #00ffff 60%, #ff0080 100%)',
     WebkitBackgroundClip: 'text',
@@ -382,15 +385,16 @@ export default function Home() {
     color: '#000000',
     border: '3px solid #000000',
     fontWeight: 800,
-    padding: '20px 40px',
-    fontSize: '18px',
+    padding: 'clamp(16px, 3vw, 20px) clamp(24px, 5vw, 40px)',
+    fontSize: 'clamp(14px, 3vw, 18px)',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
     textTransform: 'uppercase' as const,
-    letterSpacing: '2px',
+    letterSpacing: 'clamp(1px, 0.3vw, 2px)',
     display: 'inline-flex',
     alignItems: 'center',
     gap: '12px',
+    minWidth: 'fit-content',
   }
 
   const secondaryButtonStyle = {
@@ -398,15 +402,16 @@ export default function Home() {
     color: '#ffffff',
     border: '3px solid #ffffff',
     fontWeight: 800,
-    padding: '20px 40px',
-    fontSize: '18px',
+    padding: 'clamp(16px, 3vw, 20px) clamp(24px, 5vw, 40px)',
+    fontSize: 'clamp(14px, 3vw, 18px)',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
     textTransform: 'uppercase' as const,
-    letterSpacing: '2px',
+    letterSpacing: 'clamp(1px, 0.3vw, 2px)',
     display: 'inline-flex',
     alignItems: 'center',
     gap: '12px',
+    minWidth: 'fit-content',
   }
 
   const filterButtonStyle = {
@@ -562,8 +567,9 @@ export default function Home() {
           <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', 
-              gap: '40px' 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))', 
+              gap: 'clamp(20px, 4vw, 40px)',
+              padding: '0 16px',
             }}>
               {filteredPredictions.map((prediction) => (
                 <PredictionCard 
@@ -641,7 +647,7 @@ export default function Home() {
           </h1>
           
           <p style={{
-            fontSize: '24px',
+            fontSize: 'clamp(16px, 4vw, 24px)',
             fontWeight: 500,
             color: '#cccccc',
             marginBottom: '48px',
@@ -649,12 +655,19 @@ export default function Home() {
             margin: '0 auto 48px auto',
             textAlign: 'center',
             lineHeight: 1.4,
+            padding: '0 16px',
           }}>
             DECENTRALIZED PREDICTION MARKETS ON SOLANA.<br />
             KNOWLEDGE IS POWER. PREDICTIONS ARE PROFIT.
           </p>
           
-          <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ 
+            display: 'flex', 
+            gap: 'clamp(12px, 3vw, 24px)', 
+            justifyContent: 'center', 
+            flexWrap: 'wrap',
+            padding: '0 16px',
+          }}>
             <button 
               style={primaryButtonStyle}
               onClick={() => setShowCreateModal(true)}
@@ -706,8 +719,9 @@ export default function Home() {
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-            gap: '40px' 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(350px, 100%), 1fr))', 
+            gap: 'clamp(20px, 4vw, 40px)',
+            padding: '0 16px',
           }}>
             {[
               { 
@@ -856,8 +870,9 @@ export default function Home() {
           ) : (
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', 
-              gap: '40px' 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))', 
+              gap: 'clamp(20px, 4vw, 40px)',
+              padding: '0 16px',
             }}>
               {displayPredictions.slice(0, 6).map((prediction, index) => (
                 <div key={prediction.id} style={{ animationDelay: `${index * 0.1}s` }}>

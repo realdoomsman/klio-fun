@@ -44,14 +44,14 @@ export function Header({ onNavigate, onSearch }: HeaderProps) {
   }
 
   const logoTextStyle = {
-    fontSize: '32px',
+    fontSize: 'clamp(20px, 5vw, 32px)',
     fontWeight: 900,
     background: 'linear-gradient(45deg, #ffffff 0%, #00ff00 50%, #00ffff 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
     textTransform: 'uppercase' as const,
-    letterSpacing: '2px',
+    letterSpacing: 'clamp(1px, 0.3vw, 2px)',
   }
 
   const navLinkStyle = {
@@ -70,9 +70,9 @@ export function Header({ onNavigate, onSearch }: HeaderProps) {
     background: '#000000',
     border: '2px solid #ffffff',
     color: '#ffffff',
-    fontSize: '14px',
+    fontSize: 'clamp(12px, 2.5vw, 14px)',
     fontWeight: 500,
-    width: '300px',
+    width: 'clamp(200px, 25vw, 300px)',
     padding: '12px 16px 12px 48px',
     transition: 'all 0.2s ease',
     textTransform: 'uppercase' as const,
@@ -84,7 +84,7 @@ export function Header({ onNavigate, onSearch }: HeaderProps) {
       <div style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: '20px',
+        padding: 'clamp(12px, 3vw, 20px)',
       }}>
         <div style={{
           display: 'flex',

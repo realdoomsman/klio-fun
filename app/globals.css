@@ -384,6 +384,93 @@ body {
   color: #000000;
 }
 
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .mobile-stack {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
+  }
+  
+  .mobile-text-center {
+    text-align: center !important;
+  }
+  
+  .mobile-padding {
+    padding: 16px !important;
+  }
+  
+  .mobile-margin {
+    margin: 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-small-padding {
+    padding: 12px !important;
+  }
+  
+  .mobile-small-gap {
+    gap: 12px !important;
+  }
+}
+
+/* Container responsive */
+.container-responsive {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+}
+
+/* Grid responsive */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+  gap: clamp(20px, 4vw, 40px);
+}
+
+.grid-responsive-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+  gap: clamp(20px, 4vw, 40px);
+}
+
+/* Flex responsive */
+.flex-responsive {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(16px, 3vw, 24px);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Text responsive */
+.text-responsive-title {
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.1;
+}
+
+.text-responsive-subtitle {
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  line-height: 1.2;
+}
+
+.text-responsive-body {
+  font-size: clamp(14px, 3vw, 18px);
+  line-height: 1.5;
+}
+
+/* Button responsive */
+.btn-responsive {
+  padding: clamp(12px, 3vw, 20px) clamp(20px, 5vw, 40px);
+  font-size: clamp(14px, 3vw, 18px);
+  min-height: clamp(44px, 8vw, 60px);
+}
+
 /* Wallet adapter styling */
 .wallet-adapter-button {
   background: #ffffff !important;
