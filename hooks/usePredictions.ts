@@ -61,9 +61,15 @@ export function usePredictions() {
   const [predictions, setPredictions] = useState<Prediction[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const { connected } = useWallet()
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const fetchPredictions = useCallback(async () => {
+    if (!mounted) return
+    
     try {
       setLoading(true)
       setError(null)
@@ -99,12 +105,14 @@ export function usePredictions() {
   }, [])
 
   useEffect(() => {
-    fetchPredictions()
-    
-    // Refresh every 10 seconds to show live updates
-    const interval = setInterval(fetchPredictions, 10000)
-    return () => clearInterval(interval)
-  }, [fetchPredictions])
+    if (mounted) {
+      fetchPredictions()
+      
+      // Refresh every 10 seconds to show live updates
+      const interval = setInterval(fetchPredictions, 10000)
+      return () => clearInterval(interval)
+    }
+  }, [fetchPredictions, mounted])
 
   const refreshPredictions = useCallback(() => {
     fetchPredictions()

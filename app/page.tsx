@@ -207,8 +207,10 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [sortBy, setSortBy] = useState('trending') // 'trending', 'volume', 'newest', 'ending-soon'
   const [searchQuery, setSearchQuery] = useState('')
+  const [mounted, setMounted] = useState(false)
 
-  const { connected } = useWallet()
+  const wallet = useWallet()
+  const connected = mounted ? wallet.connected : false
   const { predictions, loading: predictionsLoading, error, refreshPredictions } = usePredictions()
   const { trade, createPrediction, loading: tradingLoading } = useTrading()
   
@@ -219,6 +221,7 @@ export default function Home() {
 
   // Initialize mock predictions on first load
   useEffect(() => {
+    setMounted(true)
     initializeMockPredictions()
     
     // Debug: Log predictions after initialization

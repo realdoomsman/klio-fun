@@ -1,12 +1,20 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useWallet, useConnection } from '@solana/wallet-adapter-react'
 import { toast } from 'react-hot-toast'
 import { createPrediction, buyTokens, resolvePrediction } from '@/lib/anchor-client'
 
 export function useTrading() {
   const [loading, setLoading] = useState(false)
-  const { publicKey, sendTransaction } = useWallet()
+  const [mounted, setMounted] = useState(false)
+  const wallet = useWallet()
   const { connection } = useConnection()
+  
+  const publicKey = mounted ? wallet.publicKey : null
+  const sendTransaction = mounted ? wallet.sendTransaction : null
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const trade = useCallback(async (
     predictionAddress: string, 
