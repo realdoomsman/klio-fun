@@ -1,28 +1,20 @@
 'use client'
 
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { Zap, Search, Menu, X, Activity, Twitter, Coins } from 'lucide-react'
+import { Zap, Menu, X, Activity, Twitter, Coins } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 interface HeaderProps {
   onNavigate?: (view: string) => void
-  onSearch?: (query: string) => void
 }
 
-export function Header({ onNavigate, onSearch }: HeaderProps) {
+export function Header({ onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value
-    setSearchQuery(query)
-    onSearch?.(query)
-  }
 
   const handleNavigation = (view: string) => {
     onNavigate?.(view)
@@ -188,36 +180,7 @@ export function Header({ onNavigate, onSearch }: HeaderProps) {
             alignItems: 'center',
             gap: '20px',
           }}>
-            {/* Search */}
-            <div style={{ position: 'relative' }} className="hidden md:block">
-              <Search 
-                style={{
-                  position: 'absolute',
-                  left: '16px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: '#ffffff',
-                }} 
-                size={20} 
-              />
-              <input
-                type="text"
-                placeholder="SEARCH PREDICTIONS..."
-                value={searchQuery}
-                onChange={handleSearch}
-                style={searchInputStyle}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#00ff00'
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0, 255, 0, 0.2)'
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#ffffff'
-                  e.currentTarget.style.boxShadow = 'none'
-                  e.currentTarget.style.transform = 'translateY(0)'
-                }}
-              />
-            </div>
+
             
             {/* Twitter Link */}
             <a
@@ -339,29 +302,7 @@ export function Header({ onNavigate, onSearch }: HeaderProps) {
                 FOLLOW ON X
               </a>
               
-              {/* Mobile search */}
-              <div style={{ position: 'relative', marginTop: '16px' }}>
-                <Search 
-                  style={{
-                    position: 'absolute',
-                    left: '16px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    color: '#ffffff',
-                  }} 
-                  size={20} 
-                />
-                <input
-                  type="text"
-                  placeholder="SEARCH PREDICTIONS..."
-                  value={searchQuery}
-                  onChange={handleSearch}
-                  style={{
-                    ...searchInputStyle,
-                    width: '100%',
-                  }}
-                />
-              </div>
+
             </nav>
           </div>
         )}

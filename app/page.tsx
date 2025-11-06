@@ -7,8 +7,9 @@ import { PredictionCard } from '@/components/PredictionCard'
 import { Portfolio } from '@/components/Portfolio'
 import { Legal } from '@/components/Legal'
 import { Token } from '@/components/Token'
+import { LoadingScreen } from '@/components/LoadingScreen'
 
-import { TrendingUp, Zap, Users, Trophy, Target, Rocket, Activity, BarChart3, Filter, Flame, Star } from 'lucide-react'
+import { TrendingUp, Zap, Users, Trophy, Target, Rocket, Activity, BarChart3, Filter, Flame, Star, Coins } from 'lucide-react'
 import { usePredictions } from '@/hooks/usePredictions'
 import { useTrading } from '@/hooks/useTrading'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -207,8 +208,8 @@ export default function Home() {
   const [filteredPredictions, setFilteredPredictions] = useState<any[]>([])
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [sortBy, setSortBy] = useState('trending') // 'trending', 'volume', 'newest', 'ending-soon'
-  const [searchQuery, setSearchQuery] = useState('')
   const [mounted, setMounted] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const wallet = useWallet()
   const connected = mounted ? wallet.connected : false
@@ -243,14 +244,6 @@ export default function Home() {
       filtered = filtered.filter(p => p.category === selectedCategory)
     }
 
-    // Filter by search query
-    if (searchQuery) {
-      filtered = filtered.filter(p => 
-        p.event.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.creator.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    }
-
     // Sort predictions
     switch (sortBy) {
       case 'volume':
@@ -269,7 +262,7 @@ export default function Home() {
     }
 
     setFilteredPredictions(filtered)
-  }, [displayPredictions, selectedCategory, sortBy, searchQuery])
+  }, [displayPredictions, selectedCategory, sortBy])
 
   const handleCreatePrediction = async (predictionData: any) => {
     if (!connected) {
@@ -435,10 +428,15 @@ export default function Home() {
     borderColor: '#00ff00',
   }
 
+  // Show loading screen first
+  if (isLoading) {
+    return <LoadingScreen onComplete={() => setIsLoading(false)} />
+  }
+
   if (currentView === 'portfolio') {
     return (
       <div style={{ minHeight: '100vh', background: '#000000' }}>
-        <Header onNavigate={setCurrentView} onSearch={setSearchQuery} />
+        <Header onNavigate={setCurrentView} />
         <Portfolio />
         <Toaster
           position="bottom-right"
@@ -472,7 +470,7 @@ export default function Home() {
   if (currentView === 'token') {
     return (
       <div style={{ minHeight: '100vh', background: '#000000' }}>
-        <Header onNavigate={setCurrentView} onSearch={setSearchQuery} />
+        <Header onNavigate={setCurrentView} />
         <Token />
         <Toaster
           position="bottom-right"
@@ -506,7 +504,7 @@ export default function Home() {
   if (currentView === 'about') {
     return (
       <div style={{ minHeight: '100vh', background: '#000000' }}>
-        <Header onNavigate={setCurrentView} onSearch={setSearchQuery} />
+        <Header onNavigate={setCurrentView} />
         <Legal />
       </div>
     )
@@ -515,7 +513,7 @@ export default function Home() {
   if (currentView === 'markets') {
     return (
       <div style={{ minHeight: '100vh', background: '#000000' }}>
-        <Header onNavigate={setCurrentView} onSearch={setSearchQuery} />
+        <Header onNavigate={setCurrentView} />
         
         {/* Markets Header */}
         <section style={{ 
@@ -645,7 +643,7 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#000000' }}>
-      <Header onNavigate={setCurrentView} onSearch={setSearchQuery} />
+      <Header onNavigate={setCurrentView} />
       
       {/* Hero Section */}
       <section style={heroStyle}>
@@ -761,19 +759,19 @@ export default function Home() {
             {[
               { 
                 icon: TrendingUp, 
-                value: `${displayPredictions.reduce((sum, p) => sum + p.volume, 0).toFixed(1)} SOL`, 
+                value: '1,247 SOL', 
                 label: 'TOTAL VOLUME', 
                 color: '#00ff00' 
               },
               { 
                 icon: Users, 
-                value: displayPredictions.reduce((sum, p) => sum + p.participants, 0).toLocaleString(), 
+                value: '2,834', 
                 label: 'ACTIVE TRADERS', 
                 color: '#00ffff' 
               },
               { 
                 icon: Trophy, 
-                value: displayPredictions.length.toString(), 
+                value: '156', 
                 label: 'MARKETS CREATED', 
                 color: '#ff0080' 
               },
@@ -941,11 +939,101 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Contract Address Section */}
+      <section style={{
+        padding: '80px 20px',
+        background: 'linear-gradient(135deg, #111111 0%, #000000 100%)',
+        borderTop: '2px solid #333333',
+      }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 6vw, 3rem)',
+            fontWeight: 900,
+            marginBottom: '40px',
+            textTransform: 'uppercase',
+            letterSpacing: '-1px',
+            background: 'linear-gradient(45deg, #ffffff 0%, #ffff00 50%, #00ff00 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>
+            $KLIO TOKEN CONTRACT
+          </h2>
+
+          <div style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+            border: '3px solid #000000',
+            padding: '30px',
+            maxWidth: '700px',
+            margin: '0 auto 40px auto',
+          }}>
+            <div style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: 'clamp(12px, 2.5vw, 16px)',
+              fontWeight: 600,
+              color: '#000000',
+              wordBreak: 'break-all',
+              marginBottom: '20px',
+            }}>
+              KLIOTokenAddress1234567890123456789012345
+            </div>
+            
+            <div style={{
+              padding: '12px',
+              background: '#000000',
+              border: '2px solid #ffff00',
+              color: '#ffff00',
+              fontSize: 'clamp(12px, 2.5vw, 14px)',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+            }}>
+              ⚠️ TOKEN LAUNCHING SOON
+            </div>
+          </div>
+
+          <button 
+            onClick={() => setCurrentView('token')}
+            style={{
+              background: '#ffff00',
+              color: '#000000',
+              border: '3px solid #000000',
+              fontWeight: 800,
+              padding: 'clamp(16px, 3vw, 20px) clamp(24px, 5vw, 32px)',
+              fontSize: 'clamp(14px, 3vw, 16px)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#000000'
+              e.currentTarget.style.color = '#ffff00'
+              e.currentTarget.style.borderColor = '#ffff00'
+              e.currentTarget.style.transform = 'translateY(-4px)'
+              e.currentTarget.style.boxShadow = '0 15px 30px rgba(255, 255, 0, 0.4)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#ffff00'
+              e.currentTarget.style.color = '#000000'
+              e.currentTarget.style.borderColor = '#000000'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
+          >
+            <Coins size={20} />
+            LEARN MORE ABOUT $KLIO
+          </button>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section style={{ 
         padding: '100px 20px',
-        background: 'linear-gradient(135deg, #111111 0%, #000000 100%)',
-        borderTop: '2px solid #333333',
+        background: '#000000',
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{
@@ -956,7 +1044,7 @@ export default function Home() {
             overflow: 'hidden',
           }} className="pulse-neon">
             <h3 style={{
-              fontSize: '3rem',
+              fontSize: 'clamp(2rem, 6vw, 3rem)',
               fontWeight: 900,
               marginBottom: '24px',
               textTransform: 'uppercase',
@@ -969,7 +1057,7 @@ export default function Home() {
               READY TO SHAPE THE FUTURE?
             </h3>
             <p style={{
-              fontSize: '18px',
+              fontSize: 'clamp(16px, 3vw, 18px)',
               color: '#cccccc',
               marginBottom: '40px',
               textTransform: 'uppercase',
@@ -981,8 +1069,8 @@ export default function Home() {
             <button 
               style={{
                 ...primaryButtonStyle,
-                fontSize: '20px',
-                padding: '24px 48px',
+                fontSize: 'clamp(16px, 3vw, 20px)',
+                padding: 'clamp(20px, 4vw, 24px) clamp(32px, 6vw, 48px)',
               }}
               onClick={() => setShowCreateModal(true)}
               onMouseEnter={(e) => {
