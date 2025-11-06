@@ -530,6 +530,26 @@ body {
   .mobile-menu-btn {
     display: flex !important;
   }
+  
+  /* Mobile modal optimizations */
+  .mobile-modal {
+    padding: 16px !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Mobile form inputs */
+  input, textarea, select {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    -webkit-appearance: none !important;
+    border-radius: 0 !important;
+  }
+  
+  /* Mobile button improvements */
+  button {
+    min-height: 44px !important;
+    touch-action: manipulation !important;
+  }
 }
 
 /* Wallet adapter styling */

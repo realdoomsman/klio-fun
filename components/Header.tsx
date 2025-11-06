@@ -50,12 +50,15 @@ export function Header({ onNavigate }: HeaderProps) {
     color: '#ffffff',
     fontWeight: 700,
     textDecoration: 'none',
-    padding: '12px 0',
+    padding: 'clamp(8px, 2vw, 12px) 0',
     transition: 'all 0.2s ease',
     textTransform: 'uppercase' as const,
     letterSpacing: '1px',
-    fontSize: '14px',
+    fontSize: 'clamp(12px, 2.5vw, 14px)',
     position: 'relative' as const,
+    background: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
   }
 
   const searchInputStyle = {
@@ -100,9 +103,9 @@ export function Header({ onNavigate }: HeaderProps) {
           
           {/* Desktop Navigation */}
           <nav style={{
-            display: 'none',
+            display: 'flex',
             alignItems: 'center',
-            gap: 'clamp(20px, 4vw, 40px)',
+            gap: 'clamp(16px, 3vw, 32px)',
           }} className="desktop-nav">
             <button 
               onClick={() => handleNavigation('home')}

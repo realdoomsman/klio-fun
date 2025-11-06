@@ -51,36 +51,42 @@ export function CreatePredictionModal({ onClose, onSubmit }: CreatePredictionMod
   const modalStyle = {
     position: 'fixed' as const,
     inset: 0,
-    background: 'rgba(0, 0, 0, 0.9)',
+    background: 'rgba(0, 0, 0, 0.95)',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     zIndex: 50,
-    padding: '20px',
+    padding: 'clamp(8px, 2vw, 20px)',
+    overflowY: 'auto' as const,
   }
 
   const cardStyle = {
     background: 'linear-gradient(135deg, #111111 0%, #1a1a1a 100%)',
     border: '3px solid #333333',
-    maxWidth: '700px',
+    maxWidth: '600px',
     width: '100%',
-    padding: '40px',
+    padding: 'clamp(20px, 5vw, 40px)',
     position: 'relative' as const,
     overflow: 'hidden' as const,
+    marginTop: 'clamp(20px, 5vh, 40px)',
+    marginBottom: 'clamp(20px, 5vh, 40px)',
+    minHeight: 'auto',
   }
 
   const inputStyle = {
     background: '#000000',
     border: '2px solid #ffffff',
     color: '#ffffff',
-    fontSize: '16px',
+    fontSize: 'clamp(14px, 3vw, 16px)',
     fontWeight: 500,
     width: '100%',
-    padding: '16px',
+    padding: 'clamp(12px, 3vw, 16px)',
     transition: 'all 0.2s ease',
     fontFamily: 'Inter, sans-serif',
     textTransform: 'uppercase' as const,
     letterSpacing: '1px',
+    minHeight: '48px',
+    boxSizing: 'border-box' as const,
   }
 
   const buttonStyle = {
@@ -88,16 +94,18 @@ export function CreatePredictionModal({ onClose, onSubmit }: CreatePredictionMod
     color: '#000000',
     border: '3px solid #000000',
     fontWeight: 800,
-    padding: '20px 40px',
-    fontSize: '16px',
+    padding: 'clamp(16px, 4vw, 20px) clamp(24px, 6vw, 40px)',
+    fontSize: 'clamp(14px, 3vw, 16px)',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
     textTransform: 'uppercase' as const,
-    letterSpacing: '2px',
+    letterSpacing: 'clamp(1px, 0.3vw, 2px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '12px',
+    gap: 'clamp(8px, 2vw, 12px)',
+    width: '100%',
+    minHeight: '56px',
   }
 
   const secondaryButtonStyle = {
@@ -105,12 +113,14 @@ export function CreatePredictionModal({ onClose, onSubmit }: CreatePredictionMod
     color: '#ffffff',
     border: '3px solid #ffffff',
     fontWeight: 800,
-    padding: '20px 40px',
-    fontSize: '16px',
+    padding: 'clamp(16px, 4vw, 20px) clamp(24px, 6vw, 40px)',
+    fontSize: 'clamp(14px, 3vw, 16px)',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
     textTransform: 'uppercase' as const,
-    letterSpacing: '2px',
+    letterSpacing: 'clamp(1px, 0.3vw, 2px)',
+    width: '100%',
+    minHeight: '56px',
   }
 
   return (
@@ -122,18 +132,27 @@ export function CreatePredictionModal({ onClose, onSubmit }: CreatePredictionMod
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: '40px',
+              marginBottom: 'clamp(24px, 6vw, 40px)',
+              flexWrap: 'wrap',
+              gap: '16px',
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 'clamp(12px, 3vw, 16px)',
+                flex: 1,
+                minWidth: '200px',
+              }}>
                 <div style={{
                   background: '#000000',
                   border: '3px solid #00ff00',
-                  padding: '12px',
+                  padding: 'clamp(8px, 2vw, 12px)',
+                  flexShrink: 0,
                 }}>
-                  <Zap color="#00ff00" size={28} />
+                  <Zap color="#00ff00" size={24} />
                 </div>
                 <h2 style={{
-                  fontSize: '36px',
+                  fontSize: 'clamp(20px, 6vw, 36px)',
                   fontWeight: 900,
                   background: 'linear-gradient(45deg, #ffffff 0%, #00ff00 50%, #00ffff 100%)',
                   WebkitBackgroundClip: 'text',
@@ -141,7 +160,8 @@ export function CreatePredictionModal({ onClose, onSubmit }: CreatePredictionMod
                   backgroundClip: 'text',
                   margin: 0,
                   textTransform: 'uppercase',
-                  letterSpacing: '2px',
+                  letterSpacing: 'clamp(1px, 0.3vw, 2px)',
+                  lineHeight: 1.1,
                 }}>
                   CREATE FATE
                 </h2>

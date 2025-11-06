@@ -486,21 +486,22 @@ export default function Home() {
         
         {/* Markets Header */}
         <section style={{ 
-          padding: '60px 20px 40px 20px',
+          padding: 'clamp(40px, 8vw, 60px) clamp(16px, 4vw, 20px) clamp(24px, 6vw, 40px) clamp(16px, 4vw, 20px)',
           background: 'linear-gradient(135deg, #111111 0%, #000000 100%)',
           borderBottom: '2px solid #333333',
         }}>
           <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
             <h1 style={{
-              fontSize: '3rem',
+              fontSize: 'clamp(2rem, 8vw, 3rem)',
               fontWeight: 900,
-              marginBottom: '20px',
+              marginBottom: 'clamp(16px, 4vw, 20px)',
               textTransform: 'uppercase',
-              letterSpacing: '-1px',
+              letterSpacing: 'clamp(-1px, -0.2vw, -1px)',
               background: 'linear-gradient(45deg, #ffffff 0%, #00ff00 50%, #00ffff 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
+              textAlign: 'center',
             }}>
               ALL MARKETS
             </h1>
@@ -536,42 +537,62 @@ export default function Home() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              gap: 'clamp(12px, 3vw, 16px)', 
+              alignItems: 'center',
+            }}>
               <span style={{ 
                 color: '#ffffff', 
                 fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
-                fontSize: '14px',
+                fontSize: 'clamp(12px, 2.5vw, 14px)',
               }}>
                 SORT BY:
               </span>
-              {[
-                { key: 'trending', label: 'TRENDING' },
-                { key: 'volume', label: 'VOLUME' },
-                { key: 'newest', label: 'NEWEST' },
-                { key: 'ending-soon', label: 'ENDING SOON' },
-              ].map(option => (
-                <button
-                  key={option.key}
-                  onClick={() => setSortBy(option.key)}
-                  style={sortBy === option.key ? activeFilterStyle : filterButtonStyle}
-                >
-                  {option.label}
-                </button>
-              ))}
+              <div style={{
+                display: 'flex',
+                gap: 'clamp(8px, 2vw, 12px)',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              }}>
+                {[
+                  { key: 'trending', label: 'TRENDING' },
+                  { key: 'volume', label: 'VOLUME' },
+                  { key: 'newest', label: 'NEWEST' },
+                  { key: 'ending-soon', label: 'ENDING SOON' },
+                ].map(option => (
+                  <button
+                    key={option.key}
+                    onClick={() => setSortBy(option.key)}
+                    style={{
+                      ...(sortBy === option.key ? activeFilterStyle : filterButtonStyle),
+                      padding: 'clamp(8px, 2vw, 12px) clamp(12px, 3vw, 24px)',
+                      fontSize: 'clamp(11px, 2vw, 14px)',
+                      minHeight: '40px',
+                    }}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* Markets Grid */}
-        <section style={{ padding: '60px 20px', background: '#000000' }}>
+        <section style={{ 
+          padding: 'clamp(40px, 8vw, 60px) clamp(12px, 3vw, 20px)', 
+          background: '#000000' 
+        }}>
           <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))', 
-              gap: 'clamp(20px, 4vw, 40px)',
-              padding: '0 16px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', 
+              gap: 'clamp(16px, 4vw, 40px)',
+              padding: '0 clamp(8px, 2vw, 16px)',
             }}>
               {filteredPredictions.map((prediction) => (
                 <PredictionCard 
