@@ -8,6 +8,7 @@ import { Portfolio } from '@/components/Portfolio'
 import { Legal } from '@/components/Legal'
 import { Token } from '@/components/Token'
 import { LoadingScreen } from '@/components/LoadingScreen'
+import { TradeRecords } from '@/components/TradeRecords'
 
 import { TrendingUp, Zap, Users, Trophy, Target, Rocket, Activity, BarChart3, Filter, Flame, Star, Coins } from 'lucide-react'
 import { usePredictions } from '@/hooks/usePredictions'
@@ -437,7 +438,7 @@ export default function Home() {
     return (
       <div style={{ minHeight: '100vh', background: '#000000' }}>
         <Header onNavigate={setCurrentView} />
-        <Portfolio />
+        <TradeRecords />
         <Toaster
           position="bottom-right"
           toastOptions={{

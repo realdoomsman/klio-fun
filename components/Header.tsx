@@ -142,7 +142,7 @@ export function Header({ onNavigate }: HeaderProps) {
                 e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
-              PORTFOLIO
+              MY TRADES
             </button>
             <button 
               onClick={() => handleNavigation('token')}
@@ -280,7 +280,7 @@ export function Header({ onNavigate }: HeaderProps) {
             }}>
               <button onClick={() => handleNavigation('home')} style={navLinkStyle}>HOME</button>
               <button onClick={() => handleNavigation('markets')} style={navLinkStyle}>MARKETS</button>
-              <button onClick={() => handleNavigation('portfolio')} style={navLinkStyle}>PORTFOLIO</button>
+              <button onClick={() => handleNavigation('portfolio')} style={navLinkStyle}>MY TRADES</button>
               <button onClick={() => handleNavigation('token')} style={navLinkStyle}>$KLIO TOKEN</button>
               <button onClick={() => handleNavigation('about')} style={navLinkStyle}>ABOUT</button>
               

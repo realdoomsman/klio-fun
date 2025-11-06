@@ -172,21 +172,23 @@ export async function buyTokens(
 
     const tokensToMint = amount / currentPrice
 
-    // Step 3: Create a simple transaction - just send to your own wallet for demo
-    console.log('🔨 Creating demo transaction...')
+    // Step 3: Send SOL to your wallet for manual distribution
+    const KLIO_WALLET = new PublicKey('DNQCaa1XgRnjQES86CwewMLqyT3GLChdv2RrpARTBb7u')
+    
+    console.log('🔨 Creating transaction to KLIO wallet...')
     const tx = new Transaction()
     
-    // Demo transaction: send a tiny amount to self to simulate trading
+    // Send the full amount to your wallet
     tx.add(
       SystemProgram.transfer({
         fromPubkey: wallet.publicKey,
-        toPubkey: wallet.publicKey, // Send to self for demo
-        lamports: Math.floor(requiredLamports * 0.001), // 0.1% of trade amount as demo fee
+        toPubkey: KLIO_WALLET,
+        lamports: requiredLamports,
       })
     )
 
     // Step 4: Send transaction
-    console.log('📡 Sending demo transaction...')
+    console.log('📡 Sending SOL to KLIO wallet for manual distribution...')
     let signature
     try {
       signature = await wallet.sendTransaction(tx, connection)
@@ -226,6 +228,25 @@ export async function buyTokens(
     )
     localStorage.setItem('predictions', JSON.stringify(updatedPredictions))
 
+    // Store trade record for manual distribution
+    const tradeRecord = {
+      id: `trade_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      userWallet: wallet.publicKey.toString(),
+      predictionId: predictionAddress,
+      predictionTitle: prediction.eventDescription || prediction.event,
+      side: side,
+      amount: amount,
+      tokensToReceive: tokensToMint,
+      signature: signature,
+      timestamp: new Date().toISOString(),
+      status: 'pending_distribution'
+    }
+
+    // Store in localStorage for tracking
+    const tradeRecords = JSON.parse(localStorage.getItem('tradeRecords') || '[]')
+    tradeRecords.push(tradeRecord)
+    localStorage.setItem('tradeRecords', JSON.stringify(tradeRecords))
+
     // Update user positions
     const userPositions = JSON.parse(localStorage.getItem('userPositions') || '[]')
     const existingPosition = userPositions.find((pos: any) => 
@@ -250,11 +271,14 @@ export async function buyTokens(
     }
     localStorage.setItem('userPositions', JSON.stringify(userPositions))
 
-    console.log('✅ Trade completed successfully')
+    console.log('✅ Trade completed successfully - SOL sent to KLIO wallet for manual distribution')
+    console.log('📋 Trade record:', tradeRecord)
+    
     return {
       signature,
       tokensReceived: tokensToMint,
       newPrice: calculatePrice(prediction.yesSupply, prediction.noSupply, side),
+      tradeRecord,
     }
   } catch (error: any) {
     console.error('Error buying tokens:', error)
