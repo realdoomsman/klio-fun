@@ -73,7 +73,7 @@ export function useTrading() {
       console.log('📡 Calling buyTokens function...')
       const result = await buyTokens(
         connection,
-        { publicKey, sendTransaction },
+        wallet,
         predictionAddress,
         side,
         amount
@@ -149,7 +149,7 @@ export function useTrading() {
 
       const result = await createPrediction(
         connection,
-        { publicKey, sendTransaction },
+        wallet,
         eventDescription,
         deadline,
         oracleSource,
@@ -203,7 +203,7 @@ export function useTrading() {
 
       const signature = await resolvePrediction(
         connection,
-        { publicKey, sendTransaction },
+        wallet,
         predictionAddress,
         outcome
       )
