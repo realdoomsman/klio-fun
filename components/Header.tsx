@@ -1,7 +1,7 @@
 'use client'
 
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { Zap, Menu, X, Activity, Twitter, Coins } from 'lucide-react'
+import { Zap, Menu, X as XIcon, Activity, Coins } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 interface HeaderProps {
@@ -175,7 +175,7 @@ export function Header({ onNavigate }: HeaderProps) {
           }}>
 
             
-            {/* Twitter Link */}
+            {/* X (Twitter) Link */}
             <a
               href="https://x.com/klioFun"
               target="_blank"
@@ -185,28 +185,28 @@ export function Header({ onNavigate }: HeaderProps) {
                 alignItems: 'center',
                 gap: '8px',
                 background: '#000000',
-                border: '2px solid #1DA1F2',
+                border: '2px solid #ffffff',
                 padding: '8px 16px',
                 fontSize: '12px',
                 fontWeight: 800,
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
-                color: '#1DA1F2',
+                color: '#ffffff',
                 textDecoration: 'none',
                 transition: 'all 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#1DA1F2'
-                e.currentTarget.style.color = '#ffffff'
+                e.currentTarget.style.background = '#ffffff'
+                e.currentTarget.style.color = '#000000'
                 e.currentTarget.style.transform = 'translateY(-2px)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = '#000000'
-                e.currentTarget.style.color = '#1DA1F2'
+                e.currentTarget.style.color = '#ffffff'
                 e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
-              <Twitter size={16} />
+              <XIcon size={16} />
               FOLLOW
             </a>
 
@@ -259,7 +259,7 @@ export function Header({ onNavigate }: HeaderProps) {
                 e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {mobileMenuOpen ? <XIcon size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
@@ -282,7 +282,7 @@ export function Header({ onNavigate }: HeaderProps) {
 
               <button onClick={() => handleNavigation('about')} style={navLinkStyle}>ABOUT</button>
               
-              {/* Mobile Twitter Link */}
+              {/* Mobile X (Twitter) Link */}
               <a
                 href="https://x.com/klioFun"
                 target="_blank"
@@ -292,11 +292,11 @@ export function Header({ onNavigate }: HeaderProps) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  color: '#1DA1F2',
+                  color: '#ffffff',
                   textDecoration: 'none',
                 }}
               >
-                <Twitter size={16} />
+                <XIcon size={16} />
                 FOLLOW ON X
               </a>
               

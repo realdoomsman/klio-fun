@@ -2,6 +2,8 @@ import { Connection, PublicKey, SystemProgram, LAMPORTS_PER_SOL, Keypair, Transa
 import { useAnchorWallet, useConnection } from '@solana/wallet-adapter-react'
 import { useMemo } from 'react'
 import BN from 'bn.js'
+import { db } from './database'
+import { emitPredictionCreated, emitTradeExecuted, emitPredictionResolved } from './realtime'
 
 // Production program ID (will be updated after deployment)
 const PROGRAM_ID = new PublicKey('11111111111111111111111111111112')
@@ -94,13 +96,14 @@ export async function createPrediction(
       outcome: null,
     }
 
-    const existingPredictions = JSON.parse(localStorage.getItem('predictions') || '[]')
-    existingPredictions.push({
+    const newPrediction = {
       ...predictionData,
       address: predictionKeypair.publicKey.toString(),
       id: predictionKeypair.publicKey.toString(),
-    })
-    localStorage.setItem('predictions', JSON.stringify(existingPredictions))
+    }
+    
+    db.savePrediction(newPrediction)
+    emitPredictionCreated(newPrediction)
 
 
     return {
@@ -147,17 +150,12 @@ export async function buyTokens(
     }
     
     // Step 2: Find prediction
-    const predictions = JSON.parse(localStorage.getItem('predictions') || '[]')
-    let prediction = predictions.find((p: any) => p.address === predictionAddress)
-    
-    // If not found by address, try by id (for mock predictions)
-    if (!prediction) {
-      prediction = predictions.find((p: any) => p.id === predictionAddress)
-    }
+    let prediction = db.getPrediction(predictionAddress)
     
     if (!prediction) {
       console.error('❌ Prediction not found:', predictionAddress)
-      console.log('📋 Available predictions:', predictions.map((p: any) => ({ id: p.id, address: p.address })))
+      const allPredictions = db.getPredictions()
+      console.log('📋 Available predictions:', allPredictions.map((p: any) => ({ id: p.id, address: p.address })))
       throw new Error(`Prediction not found: ${predictionAddress}`)
     }
     
@@ -216,33 +214,41 @@ export async function buyTokens(
     }
 
     // Update prediction state for UI
-    prediction.totalVolume += amount
-    if (side === 'yes') {
-      prediction.yesSupply += tokensToMint
-    } else {
-      prediction.noSupply += tokensToMint
-    }
+    db.updatePrediction(predictionAddress, {
+      totalVolume: prediction.totalVolume + amount,
+      yesSupply: side === 'yes' ? prediction.yesSupply + tokensToMint : prediction.yesSupply,
+      noSupply: side === 'no' ? prediction.noSupply + tokensToMint : prediction.noSupply,
+    })
 
-    const updatedPredictions = predictions.map((p: any) => 
-      p.address === predictionAddress ? prediction : p
-    )
-    localStorage.setItem('predictions', JSON.stringify(updatedPredictions))
+    // Save trade record
+    const trade = {
+      id: `trade_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      predictionId: predictionAddress,
+      user: wallet.publicKey.toString(),
+      side,
+      amount,
+      tokensReceived: tokensToMint,
+      signature,
+      timestamp: Date.now(),
+    }
+    db.saveTrade(trade)
+    emitTradeExecuted(trade)
 
     // Update user positions for portfolio display
-    const userPositions = JSON.parse(localStorage.getItem('userPositions') || '[]')
-    const existingPosition = userPositions.find((pos: any) => 
-      pos.prediction === predictionAddress && pos.user === wallet.publicKey.toString()
+    const existingPositions = db.getUserPositions(wallet.publicKey.toString())
+    const existingPosition = existingPositions.find((pos: any) => 
+      pos.prediction === predictionAddress
     )
 
     if (existingPosition) {
-      if (side === 'yes') {
-        existingPosition.yesTokens += tokensToMint
-      } else {
-        existingPosition.noTokens += tokensToMint
-      }
-      existingPosition.totalInvested += amount
+      db.savePosition({
+        ...existingPosition,
+        yesTokens: side === 'yes' ? existingPosition.yesTokens + tokensToMint : existingPosition.yesTokens,
+        noTokens: side === 'no' ? existingPosition.noTokens + tokensToMint : existingPosition.noTokens,
+        totalInvested: existingPosition.totalInvested + amount,
+      })
     } else {
-      userPositions.push({
+      db.savePosition({
         prediction: predictionAddress,
         user: wallet.publicKey.toString(),
         yesTokens: side === 'yes' ? tokensToMint : 0,
@@ -250,7 +256,6 @@ export async function buyTokens(
         totalInvested: amount,
       })
     }
-    localStorage.setItem('userPositions', JSON.stringify(userPositions))
 
     console.log('✅ Trade completed successfully - SOL sent to KLIO wallet')
     
@@ -277,12 +282,11 @@ export function calculatePrice(yesSupply: number, noSupply: number, side: 'yes' 
 }
 
 export function getAllPredictions(): any[] {
-  return JSON.parse(localStorage.getItem('predictions') || '[]')
+  return db.getPredictions()
 }
 
 export function getUserPositions(userAddress: string): any[] {
-  const positions = JSON.parse(localStorage.getItem('userPositions') || '[]')
-  return positions.filter((pos: any) => pos.user === userAddress)
+  return db.getUserPositions(userAddress)
 }
 
 export function lamportsToSol(lamports: BN | number): number {
