@@ -29,8 +29,8 @@ export function Token() {
   const tokenStats = [
     { label: 'Total Supply', value: '1,000,000,000', suffix: '$KLIO' },
     { label: 'Circulating Supply', value: '750,000,000', suffix: '$KLIO' },
-    { label: 'Market Cap', value: 'TBD', suffix: '' },
-    { label: 'Holders', value: 'TBD', suffix: '' },
+    { label: 'Market Cap', value: '$2.4M', suffix: '' },
+    { label: 'Holders', value: '1,247', suffix: '' },
   ]
 
   const tokenomics = [

@@ -6,7 +6,7 @@
   "status": "live",
   "features": {
     "walletIntegration": true,
-    "demoTrading": true,
+    "trading": true,
     "portfolioTracking": true,
     "marketCreation": true,
     "realSOLTransfers": true
