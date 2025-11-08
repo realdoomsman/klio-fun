@@ -798,12 +798,12 @@ export default function Home() {
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: 'clamp(12px, 2.5vw, 16px)',
                 fontWeight: 600,
-                color: '#ffff00',
+                color: '#00ff00',
                 wordBreak: 'break-all',
                 textAlign: 'center',
                 lineHeight: 1.8,
               }}>
-                [TOKEN CONTRACT ADDRESS COMING SOON]
+                85kBatQcCu7ZFy5YZYBVWa1HKGaWVwiA9jaP9qz4pump
               </div>
             </div>
 
@@ -813,17 +813,17 @@ export default function Home() {
               justifyContent: 'center',
               gap: 'clamp(10px, 2vw, 16px)',
               padding: 'clamp(16px, 4vw, 20px)',
-              background: 'rgba(255, 255, 0, 0.2)',
-              border: '2px solid #ffff00',
-              color: '#ffff00',
+              background: 'rgba(0, 255, 0, 0.2)',
+              border: '2px solid #00ff00',
+              color: '#00ff00',
               fontSize: 'clamp(14px, 3vw, 16px)',
               fontWeight: 800,
               textTransform: 'uppercase',
               letterSpacing: '1px',
               marginBottom: 'clamp(20px, 4vw, 24px)',
             }}>
-              <Coins size={24} color="#ffff00" />
-              <span>LAUNCHING SOON</span>
+              <Coins size={24} color="#00ff00" />
+              <span>NOW LIVE</span>
             </div>
 
             <p style={{
@@ -832,7 +832,7 @@ export default function Home() {
               lineHeight: 1.6,
               margin: 0,
             }}>
-              Trade predictions and earn $KLIO tokens. Contract address will be announced at launch.
+              Trade predictions and earn $KLIO tokens. Token is now live on Solana!
             </p>
           </div>
         </div>
