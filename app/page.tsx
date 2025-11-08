@@ -87,8 +87,8 @@ const initializeMockPredictions = () => {
       },
       {
         address: 'mock_prediction_5',
-        eventDescription: 'Bitcoin ETF approval by end of 2024',
-        deadline: Math.floor(new Date('2024-12-31').getTime() / 1000),
+        eventDescription: 'Bitcoin ETF approval by end of 2025',
+        deadline: Math.floor(new Date('2025-12-31').getTime() / 1000),
         creator: '1111111111111111111111111111111A',
         oracleSource: 'SEC Filings',
         startingOdds: 78,
@@ -178,8 +178,8 @@ const mockPredictions = [
   {
     id: 'mock_prediction_5',
     address: 'mock_prediction_5',
-    event: 'Bitcoin ETF approval by end of 2024',
-    deadline: new Date('2024-12-31'),
+    event: 'Bitcoin ETF approval by end of 2025',
+    deadline: new Date('2025-12-31'),
     yesPrice: 0.78,
     noPrice: 0.22,
     volume: 234000,
