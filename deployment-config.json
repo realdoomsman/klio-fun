@@ -1,9 +1,9 @@
 {
-  "programId": "DEMO_MODE_NO_REAL_CONTRACT",
-  "network": "demo",
-  "deployedAt": "2025-11-06T07:58:48Z",
-  "mode": "demo",
-  "status": "demo-ready",
+  "programId": "2e6hieA8oZeoBQeJyUku9cELTeWk11ReJwMhWcSWpump",
+  "network": "mainnet",
+  "deployedAt": "2024-11-08T17:00:00Z",
+  "mode": "production",
+  "status": "live",
   "features": {
     "walletIntegration": true,
     "demoTrading": true,
