@@ -12,8 +12,8 @@ export function Token() {
     setMounted(true)
   }, [])
 
-  // Placeholder contract address - replace with actual when deployed
-  const contractAddress = "KLIOTokenAddress1234567890123456789012345"
+  // $KLIO Token Contract Address
+  const contractAddress = "85kBatQcCu7ZFy5YZYBVWa1HKGaWVwiA9jaP9qz4pump"
   
   const copyToClipboard = async (text: string) => {
     try {
@@ -220,14 +220,14 @@ export function Token() {
               marginTop: '24px',
               padding: '16px',
               background: '#000000',
-              border: '2px solid #ffff00',
-              color: '#ffff00',
+              border: '2px solid #00ff00',
+              color: '#00ff00',
               fontSize: '14px',
               fontWeight: 600,
               textTransform: 'uppercase',
               letterSpacing: '1px',
             }}>
-              ⚠️ TOKEN LAUNCHING SOON - CONTRACT ADDRESS COMING SOON
+              ⚡ $KLIO TOKEN IS LIVE ON SOLANA
             </div>
           </div>
         </div>
