@@ -100,6 +100,7 @@ export async function createPrediction(
       ...predictionData,
       address: predictionKeypair.publicKey.toString(),
       id: predictionKeypair.publicKey.toString(),
+      createdAt: Date.now(),
     }
     
     db.savePrediction(newPrediction)
@@ -159,7 +160,7 @@ export async function buyTokens(
       throw new Error(`Prediction not found: ${predictionAddress}`)
     }
     
-    console.log('✅ Found prediction:', prediction.eventDescription || prediction.event)
+    console.log('✅ Found prediction:', prediction.eventDescription)
 
     // Calculate tokens using bonding curve
     const baseLiquidity = 1000
