@@ -9,33 +9,7 @@ This guide will help you deploy Klio.fun as a **real money-making prediction mar
 - ✅ **Earn fees** as market makers
 - ✅ **Claim real winnings** from resolved markets
 
-## 🏗️ Architecture
-
-```
-Frontend (Next.js) → Anchor Client → Smart Contract (Solana) → Real SOL Trading
-                                  ↓
-                            Token Minting/Burning
-                                  ↓
-                            Automated Payouts
-```
-
-## 📋 Prerequisites
-
-- Node.js 18+ installed
-- Git installed
-- Basic understanding of Solana/Web3
-
-## 🚀 Quick Start (Automated)
-
-### Option 1: One-Click Setup
-
-```bash
-# Clone and setup everything automatically
-git clone <your-repo>
-cd fatefun
-npm install
-./scripts/setup-production.sh
-```
+`
 
 This script will:
 - ✅ Install Rust, Solana CLI, and Anchor

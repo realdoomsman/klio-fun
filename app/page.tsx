@@ -742,96 +742,67 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Contract Address Section */}
       <section style={{ 
         padding: 'clamp(60px, 12vw, 100px) clamp(16px, 4vw, 20px)', 
         background: 'linear-gradient(135deg, #111111 0%, #000000 100%)',
         borderBottom: '2px solid #333333',
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', 
-            gap: 'clamp(20px, 4vw, 40px)',
-            padding: '0 clamp(8px, 2vw, 16px)',
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 6vw, 3rem)',
+            fontWeight: 900,
+            marginBottom: 'clamp(24px, 6vw, 40px)',
+            textTransform: 'uppercase',
+            letterSpacing: '-1px',
+            background: 'linear-gradient(45deg, #ffffff 0%, #00ff00 50%, #00ffff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
           }}>
-            {[
-              { 
-                icon: TrendingUp, 
-                value: '1,247 SOL', 
-                label: 'TOTAL VOLUME', 
-                color: '#00ff00' 
-              },
-              { 
-                icon: Users, 
-                value: '2,834', 
-                label: 'ACTIVE TRADERS', 
-                color: '#00ffff' 
-              },
-              { 
-                icon: Trophy, 
-                value: '156', 
-                label: 'MARKETS CREATED', 
-                color: '#ff0080' 
-              },
-            ].map((stat, index) => (
-              <div 
-                key={index}
-                style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-                  border: '3px solid #000000',
-                  color: '#000000',
-                  padding: '40px',
-                  textAlign: 'center',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-12px)'
-                  e.currentTarget.style.borderColor = stat.color
-                  e.currentTarget.style.boxShadow = `0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 3px ${stat.color}`
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.borderColor = '#000000'
-                  e.currentTarget.style.boxShadow = 'none'
-                }}
-              >
-                <div style={{
-                  background: '#000000',
-                  width: '80px',
-                  height: '80px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 24px auto',
-                  border: `3px solid ${stat.color}`,
-                }}>
-                  <stat.icon size={36} color={stat.color} />
-                </div>
-                <h3 style={{
-                  fontSize: '48px',
-                  fontWeight: 900,
-                  marginBottom: '12px',
-                  fontFamily: 'JetBrains Mono, monospace',
-                  color: '#000000',
-                  letterSpacing: '2px',
-                }}>
-                  {stat.value}
-                </h3>
-                <p style={{ 
-                  color: '#666666', 
-                  fontSize: '16px', 
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  margin: 0,
-                }}>
-                  {stat.label}
-                </p>
-              </div>
-            ))}
+            TRADING WALLET
+          </h2>
+
+          <div style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+            border: '3px solid #000000',
+            padding: 'clamp(24px, 5vw, 40px)',
+            marginBottom: 'clamp(20px, 4vw, 30px)',
+          }}>
+            <div style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: 'clamp(12px, 2.5vw, 16px)',
+              fontWeight: 600,
+              color: '#000000',
+              wordBreak: 'break-all',
+              marginBottom: 'clamp(16px, 4vw, 20px)',
+              lineHeight: 1.6,
+            }}>
+              DNQCaa1XgRnjQES86CwewMLqyT3GLChdv2RrpARTBb7u
+            </div>
+            
+            <div style={{
+              padding: 'clamp(12px, 3vw, 16px)',
+              background: '#000000',
+              border: '2px solid #00ff00',
+              color: '#00ff00',
+              fontSize: 'clamp(12px, 2.5vw, 14px)',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+            }}>
+              ✓ ALL TRADES SENT TO THIS WALLET
+            </div>
           </div>
+
+          <p style={{
+            fontSize: 'clamp(14px, 3vw, 16px)',
+            color: '#cccccc',
+            lineHeight: 1.6,
+            marginBottom: 0,
+          }}>
+            When you trade, your SOL is sent directly to this wallet. Tokens are distributed automatically via our third-party system.
+          </p>
         </div>
       </section>
 
