@@ -4,7 +4,7 @@ import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddres
 import { FateFun } from './types/fate_fun'
 import idl from './idl/fate_fun.json'
 
-const PROGRAM_ID = new PublicKey('2e6hieA8oZeoBQeJyUku9cELTeWk11ReJwMhWcSWpump')
+const PROGRAM_ID = new PublicKey('85kBatQcCu7ZFy5YZYBVWa1HKGaWVwiA9jaP9qz4pump')
 
 export class FateFunProgram {
   private program: Program<FateFun>

@@ -6,7 +6,7 @@ import { db } from './database'
 import { emitPredictionCreated, emitTradeExecuted, emitPredictionResolved } from './realtime'
 
 // Production program ID (will be updated after deployment)
-const PROGRAM_ID = new PublicKey('2e6hieA8oZeoBQeJyUku9cELTeWk11ReJwMhWcSWpump')
+const PROGRAM_ID = new PublicKey('85kBatQcCu7ZFy5YZYBVWa1HKGaWVwiA9jaP9qz4pump')
 
 export interface PredictionAccount {
   creator: PublicKey
