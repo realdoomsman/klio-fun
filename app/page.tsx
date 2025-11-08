@@ -742,67 +742,99 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contract Address Section */}
+      {/* Token Contract Address Section */}
       <section style={{ 
         padding: 'clamp(60px, 12vw, 100px) clamp(16px, 4vw, 20px)', 
         background: 'linear-gradient(135deg, #111111 0%, #000000 100%)',
         borderBottom: '2px solid #333333',
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{
-            fontSize: 'clamp(2rem, 6vw, 3rem)',
-            fontWeight: 900,
-            marginBottom: 'clamp(24px, 6vw, 40px)',
-            textTransform: 'uppercase',
-            letterSpacing: '-1px',
-            background: 'linear-gradient(45deg, #ffffff 0%, #00ff00 50%, #00ffff 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            TRADING WALLET
-          </h2>
-
           <div style={{
-            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-            border: '3px solid #000000',
-            padding: 'clamp(24px, 5vw, 40px)',
-            marginBottom: 'clamp(20px, 4vw, 30px)',
+            background: 'linear-gradient(135deg, #000000 0%, #111111 100%)',
+            border: '3px solid #ffff00',
+            padding: 'clamp(30px, 6vw, 50px)',
+            position: 'relative',
+            overflow: 'hidden',
           }}>
             <div style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: 'clamp(12px, 2.5vw, 16px)',
-              fontWeight: 600,
+              position: 'absolute',
+              top: '-10px',
+              right: '-10px',
+              background: '#ffff00',
               color: '#000000',
-              wordBreak: 'break-all',
-              marginBottom: 'clamp(16px, 4vw, 20px)',
-              lineHeight: 1.6,
-            }}>
-              DNQCaa1XgRnjQES86CwewMLqyT3GLChdv2RrpARTBb7u
-            </div>
-            
-            <div style={{
-              padding: 'clamp(12px, 3vw, 16px)',
-              background: '#000000',
-              border: '2px solid #00ff00',
-              color: '#00ff00',
-              fontSize: 'clamp(12px, 2.5vw, 14px)',
-              fontWeight: 600,
+              padding: '8px 16px',
+              fontSize: 'clamp(10px, 2vw, 12px)',
+              fontWeight: 800,
               textTransform: 'uppercase',
               letterSpacing: '1px',
+              transform: 'rotate(15deg)',
+              zIndex: 10,
             }}>
-              ✓ ALL TRADES SENT TO THIS WALLET
+              TOKEN
             </div>
-          </div>
 
-          <p style={{
-            fontSize: 'clamp(14px, 3vw, 16px)',
-            color: '#cccccc',
-            lineHeight: 1.6,
-            marginBottom: 0,
-          }}>
-            When you trade, your SOL is sent directly to this wallet. Tokens are distributed automatically via our third-party system.
-          </p>
+            <h2 style={{
+              fontSize: 'clamp(2rem, 6vw, 3rem)',
+              fontWeight: 900,
+              marginBottom: 'clamp(20px, 5vw, 30px)',
+              textTransform: 'uppercase',
+              letterSpacing: '-1px',
+              background: 'linear-gradient(45deg, #ffff00 0%, #00ff00 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textAlign: 'center',
+            }}>
+              $KLIO TOKEN CONTRACT
+            </h2>
+
+            <div style={{
+              background: 'rgba(255, 255, 0, 0.1)',
+              border: '2px solid #ffff00',
+              padding: 'clamp(20px, 5vw, 30px)',
+              marginBottom: 'clamp(20px, 5vw, 30px)',
+            }}>
+              <div style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: 'clamp(12px, 2.5vw, 16px)',
+                fontWeight: 600,
+                color: '#ffff00',
+                wordBreak: 'break-all',
+                textAlign: 'center',
+                lineHeight: 1.8,
+              }}>
+                [TOKEN CONTRACT ADDRESS COMING SOON]
+              </div>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 'clamp(10px, 2vw, 16px)',
+              padding: 'clamp(16px, 4vw, 20px)',
+              background: 'rgba(255, 255, 0, 0.2)',
+              border: '2px solid #ffff00',
+              color: '#ffff00',
+              fontSize: 'clamp(14px, 3vw, 16px)',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginBottom: 'clamp(20px, 4vw, 24px)',
+            }}>
+              <Coins size={24} color="#ffff00" />
+              <span>LAUNCHING SOON</span>
+            </div>
+
+            <p style={{
+              fontSize: 'clamp(14px, 3vw, 16px)',
+              color: '#cccccc',
+              lineHeight: 1.6,
+              margin: 0,
+            }}>
+              Trade predictions and earn $KLIO tokens. Contract address will be announced at launch.
+            </p>
+          </div>
         </div>
       </section>
 
